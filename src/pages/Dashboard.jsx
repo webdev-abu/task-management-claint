@@ -49,7 +49,7 @@ const Dashboard = () => {
           <ul>
             <li className="mb-4">
               <Link
-                to="/"
+                to="/dashboard"
                 className="flex items-center px-6 py-2 text-base-content hover:bg-base-300"
                 onClick={() => setIsSidebarOpen(false)}
               >
