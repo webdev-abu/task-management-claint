@@ -63,36 +63,41 @@ Welcome to **Task Management Application**. An Online Tutor Booking Platform is 
 
 To set up the project, follow these steps:
 Installation
-1️⃣ Clone the Repository
-bash
-Copy
-Edit
-git clone https://github.com/your-username/task-management-app.git
+1️⃣ clint Clone the Repository
+
+```bash
+git clone https://github.com/webdev-abu/task-management-claint
 cd task-management-app
+```
+
 2️⃣ Install Dependencies
-bash
-Copy
-Edit
+
+```bash
 npm install
+```
+
 3️⃣ Set Up Firebase (if using Firebase for real-time sync)
-Go to Firebase Console
-Create a new project
-Enable Firestore Database & Authentication (Google Sign-In, if needed)
-Copy Firebase config and create a .env file in the root directory:
-env
-Copy
-Edit
+
+- Go to Firebase Console
+- Create a new project
+- Enable Firestore Database & Authentication (Google Sign-In, if needed)
+- Copy Firebase config and create a .env file in the root directory:
+
+```env
 VITE_FIREBASE_API_KEY=your_api_key
 VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
 VITE_FIREBASE_PROJECT_ID=your_project_id
 VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
 VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
+```
+
 4️⃣ Start the Application
-bash
-Copy
-Edit
+
+```bash
 npm run dev
+```
+
 Your app will be available at http://localhost:5173/ 🚀
 
 # Live Link
