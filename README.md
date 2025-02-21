@@ -63,10 +63,13 @@ Welcome to **Task Management Application**. An Online Tutor Booking Platform is 
 
 To set up the project, follow these steps:
 Installation
-1️⃣ clint Clone the Repository
+
+---
+
+1️⃣ Client site Clone the Repository
 
 ```bash
-git clone https://github.com/webdev-abu/task-management-claint
+git clone https://github.com/webdev-abu/task-management-claint.git
 cd task-management-app
 ```
 
@@ -99,6 +102,41 @@ npm run dev
 ```
 
 Your app will be available at http://localhost:5173/ 🚀
+
+---
+
+Installation
+1️⃣ Server Clone the Repository
+
+```bash
+git clone https://github.com/webdev-abu/task-management-server.git
+cd task-management-server
+```
+
+2️⃣ Install Dependencies
+
+```bash
+npm install
+```
+
+3️⃣ Configure Environment Variables
+Create a .env file in the root directory and add your Firebase or MongoDB credentials:
+
+- For MongoDB (If Using MongoDB Instead of Firebase)
+
+```env
+PORT=5000
+MONGO_URI=mongodb+srv://your_mongo_user:your_mongo_password@cluster0.mongodb.net/taskDB
+JWT_SECRET=your_jwt_secret_key
+```
+
+4️⃣ Start the Server
+
+```bash
+node index.js
+```
+
+## The server will run on http://localhost:5000/ 🚀
 
 # Live Link
 
