@@ -1,6 +1,6 @@
-# [E-Tutor Booking](https://tutor-booking-43ee8.web.app/)
+# [Task Management Application](https://task-management-7695a.web.app)
 
-Welcome to **E-Tutor Booking**. An Online Tutor Booking Platform is a system designed to connect students with qualified tutors for various subjects or skills.
+Welcome to **Task Management Application**. An Online Tutor Booking Platform is a system designed to connect students with qualified tutors for various subjects or skills.
 
 ---
 
@@ -12,26 +12,28 @@ Welcome to **E-Tutor Booking**. An Online Tutor Booking Platform is a system des
 - React Router,
 - React Hook,
 - React Component,
-- React sweet alert,
 - Firebase Authentication,
 - JWT Authentication,
 - React swiper,
-- React lottie-react
 - React framer-motion,
 - React react-router-dom,
-- React Hot Toast,
 - React Fontawasomeicon,
 - The design responsive (Mobile , Tab, Desktop).
 
-### key features of E-Tutor Booking
+### key features of Task Management Application
 
-**_ Real-Time Communication _**
+**_ Task Management _**
 
-- Chat or video call functionality for direct interaction. Tools for conducting lessons, like whiteboards and file sharing.
+- Create Tasks – Add new tasks with a title (max 50 characters) and an optional description (max 200 characters).
+- Edit Tasks – Modify task details, including title and description.
+- Delete Tasks – Remove tasks when no longer needed.
+- Auto Timestamp – Each task gets an automatic timestamp upon creation.
 
-**_ Booking and Scheduling _**
+**_ Categorization & Organization _**
 
-- Calendar integration for scheduling lessons. Automated reminders and rescheduling options.
+- ask Categories – Tasks are organized into To-Do, In Progress, and Done columns.
+- Drag-and-Drop – Move tasks between categories effortlessly.
+- Reordering – Reorder tasks within the same category for prioritization.
 
 **_ Authentication _**
 
@@ -42,26 +44,67 @@ Welcome to **E-Tutor Booking**. An Online Tutor Booking Platform is a system des
 
 - Built with React, Tailwind CSS, and DaisyUI for a seamless experience on both desktop and mobile devices.
 
-**_ Interactive UI _**
+**_ User Interface & Experience _**
 
-- React Icons to enhance the visual appeal of navigation and actions like user, add , and account management.
+- Clean & Responsive UI – Built with React, Tailwind CSS, DaisyUI, and Framer Motion.
+- Smooth Animations – Uses Framer Motion for fluid transitions.
+- Dark Mode Support – Optional dark mode for better usability.
 
-**_ Feedback and Reviews _**
+**_ Real-Time Synchronization _**
 
-- Students can leave reviews for tutors. Tutors can rate students for accountability.
+- Live Updates – Changes are instantly reflected across all users/devices.
+- Database Integration – Stores tasks in a real-time database (e.g., Firebase).
 
 ---
 
+---
+
+### Project Setup
+
+To set up the project, follow these steps:
+Installation
+1️⃣ Clone the Repository
+bash
+Copy
+Edit
+git clone https://github.com/your-username/task-management-app.git
+cd task-management-app
+2️⃣ Install Dependencies
+bash
+Copy
+Edit
+npm install
+3️⃣ Set Up Firebase (if using Firebase for real-time sync)
+Go to Firebase Console
+Create a new project
+Enable Firestore Database & Authentication (Google Sign-In, if needed)
+Copy Firebase config and create a .env file in the root directory:
+env
+Copy
+Edit
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+4️⃣ Start the Application
+bash
+Copy
+Edit
+npm run dev
+Your app will be available at http://localhost:5173/ 🚀
+
 # Live Link
 
-# [https://tutor-booking-43ee8.web.app/](https://tutor-booking-43ee8.web.app/)
+# [https://task-management-7695a.web.app](https://task-management-7695a.web.app)
 
 # Client-side GitHub Code Link
 
-# [https://github.com/programming-hero-web-course2/b10a11-client-side-webdev-abu](https://github.com/programming-hero-web-course2/b10a11-client-side-webdev-abu)
+# [https://github.com/webdev-abu/task-management-claint](https://github.com/webdev-abu/task-management-claint)
 
 # Server-side GitHub Code Link
 
-# [https://github.com/programming-hero-web-course2/b10a11-server-side-webdev-abu](https://github.com/programming-hero-web-course2/b10a11-server-side-webdev-abu)
+# [https://github.com/webdev-abu/task-management-server](https://github.com/webdev-abu/task-management-server)
 
 ---
