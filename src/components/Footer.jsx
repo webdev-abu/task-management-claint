@@ -12,7 +12,7 @@ const Footer = () => {
           </div>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <a
-              href="https://github.com"
+              href="https://github.com/webdev-abu"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-primary"
@@ -20,7 +20,7 @@ const Footer = () => {
               <FaGithub className="text-2xl" />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/webdev-abu/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-primary"

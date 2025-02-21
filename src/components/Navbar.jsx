@@ -75,21 +75,7 @@ const Navbar = () => {
         animate={{ height: isOpen ? "auto" : 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex flex-col items-center space-y-4 py-4">
-          {/* <NavLink to="/" onClick={toggleMenu}>
-            Home
-          </NavLink>
-          <NavLink to="#about" onClick={toggleMenu}>
-            About
-          </NavLink>
-          <NavLink to="#features" onClick={toggleMenu}>
-            Features
-          </NavLink>
-          <NavLink to="#contact" onClick={toggleMenu}>
-            Contact
-          </NavLink> */}
-          {links}
-        </div>
+        <div className="flex flex-col items-center space-y-4 py-4">{links}</div>
       </motion.div>
     </nav>
   );
