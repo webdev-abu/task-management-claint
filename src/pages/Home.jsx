@@ -124,19 +124,21 @@ const Home = () => {
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="hero min-h-[calc(100vh-65px)] bg-base-200"
+        className="hero min-h-[calc(100vh-65px)] bg-[url(./assets/bg-hero.jpg)] "
       >
-        <div className="hero-content text-center">
-          <div className="max-w-2xl">
-            <h1 className="text-5xl font-bold text-primary">Taskify</h1>
-            <p className="py-6 text-lg">
-              Manage your tasks efficiently and boost your productivity with
-              Taskify. Organize, prioritize, and achieve your goals
-              effortlessly.
-            </p>
-            <button className="btn btn-primary">
-              Get Started <FaRocket className="ml-2" />
-            </button>
+        <div className="hero min-h-screen min-w-full bg-black bg-opacity-50">
+          <div className="hero-content  text-center dark:text-white">
+            <div className="max-w-2xl">
+              <h1 className="text-5xl font-bold text-primary ">Taskify</h1>
+              <p className="py-6 text-lg">
+                Manage your tasks efficiently and boost your productivity with
+                Taskify. Organize, prioritize, and achieve your goals
+                effortlessly.
+              </p>
+              <button className="btn btn-primary">
+                Get Started <FaRocket className="ml-2" />
+              </button>
+            </div>
           </div>
         </div>
       </motion.div>
