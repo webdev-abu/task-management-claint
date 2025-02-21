@@ -20,6 +20,30 @@ const Navbar = () => {
     }
   };
 
+  const links = (
+    <>
+      <NavLink to="/">Home</NavLink>
+      <NavLink to="/about-us">About</NavLink>
+      <NavLink to="/#features">Features</NavLink>
+      <NavLink to="#contact">Contact</NavLink>
+      <NavLink to="/login">
+        <div className="flex justify-between items-center gap-1">
+          <FaSignInAlt className="mr-2" />
+          Login
+        </div>
+      </NavLink>
+      <NavLink onClick={toggleTheme}>
+        <div className="flex justify-between items-center gap-1">
+          {isDarkMode ? (
+            <FaSun className="text-md" />
+          ) : (
+            <FaMoon className="text-md" />
+          )}
+        </div>
+      </NavLink>
+    </>
+  );
+
   return (
     <nav className="w-full fixed top-0 left-0 bg-white shadow-md z-50">
       <div className="container mx-auto flex items-center justify-between px-4 py-4">
@@ -34,27 +58,7 @@ const Navbar = () => {
         </motion.div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-6 items-center ">
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/about-us">About</NavLink>
-          <NavLink to="#features">Features</NavLink>
-          <NavLink to="#contact">Contact</NavLink>
-          <NavLink to="/login">
-            <div className="flex justify-between items-center gap-1">
-              <FaSignInAlt className="mr-2" />
-              Login
-            </div>
-          </NavLink>
-          <NavLink onClick={toggleTheme}>
-            <div className="flex justify-between items-center gap-1">
-              {isDarkMode ? (
-                <FaSun className="text-md" />
-              ) : (
-                <FaMoon className="text-md" />
-              )}
-            </div>
-          </NavLink>
-        </div>
+        <div className="hidden md:flex space-x-6 items-center ">{links}</div>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
@@ -72,7 +76,7 @@ const Navbar = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="flex flex-col items-center space-y-4 py-4">
-          <NavLink to="/" onClick={toggleMenu}>
+          {/* <NavLink to="/" onClick={toggleMenu}>
             Home
           </NavLink>
           <NavLink to="#about" onClick={toggleMenu}>
@@ -83,7 +87,8 @@ const Navbar = () => {
           </NavLink>
           <NavLink to="#contact" onClick={toggleMenu}>
             Contact
-          </NavLink>
+          </NavLink> */}
+          {links}
         </div>
       </motion.div>
     </nav>
