@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -37,7 +36,7 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-6 items-center ">
           <NavLink to="/">Home</NavLink>
-          <NavLink to="#about">About</NavLink>
+          <NavLink to="/about-us">About</NavLink>
           <NavLink to="#features">Features</NavLink>
           <NavLink to="#contact">Contact</NavLink>
           <NavLink to="/login">
