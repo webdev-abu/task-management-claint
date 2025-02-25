@@ -1,158 +1,192 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
-  FaTasks,
-  FaCalendarAlt,
-  FaCog,
-  FaUser,
-  FaPlus,
-  FaBars,
-  FaSun,
-  FaMoon,
-} from "react-icons/fa";
-import { motion } from "framer-motion";
-import { Link, Outlet } from "react-router-dom";
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragOverlay,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  horizontalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import axios from "axios";
+import TaskForm from "../components/Tasks/TaskForm";
+import TaskColumn from "../components/Tasks/TaskColumn";
+import TaskItem from "../components/Tasks/TaskItem";
 
 const Dashboard = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
-  const [theme, setTheme] = React.useState(
-    localStorage.getItem("theme") || "light"
-  );
+  const [columns, setColumns] = useState([
+    { id: "To-Do", tasks: [] },
+    { id: "In Progress", tasks: [] },
+    { id: "Done", tasks: [] },
+  ]);
+  const [showForm, setShowForm] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
+  const [activeTask, setActiveTask] = useState(null);
 
-  // Function to toggle theme
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
+  // Fetch tasks from the backend
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/tasks`);
+    const tasks = response.data;
+    const updatedColumns = columns.map((column) => ({
+      ...column,
+      tasks: tasks.filter((task) => task.category === column.id),
+    }));
+    setColumns(updatedColumns);
   };
 
-  // Set theme on initial load
-  React.useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
+  // Handle drag-and-drop
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor)
+  );
+
+  const handleDragStart = (event) => {
+    const { active } = event;
+    const task = columns
+      .flatMap((column) => column.tasks)
+      .find((task) => task._id === active.id);
+    setActiveTask(task);
+  };
+
+  const handleDragEnd = async (event) => {
+    const { active, over } = event;
+
+    if (!over) return;
+
+    const activeColumn = columns.find((column) =>
+      column.tasks.some((task) => task._id === active.id)
+    );
+    const overColumn = columns.find((column) =>
+      column.tasks.some((task) => task._id === over.id)
+    );
+
+    if (active.id === over.id) return;
+
+    if (activeColumn.id === overColumn.id) {
+      // Reorder tasks within the same column
+      const columnIndex = columns.findIndex(
+        (column) => column.id === activeColumn.id
+      );
+      const updatedTasks = arrayMove(
+        activeColumn.tasks,
+        activeColumn.tasks.findIndex((task) => task._id === active.id),
+        activeColumn.tasks.findIndex((task) => task._id === over.id)
+      );
+      const updatedColumns = [...columns];
+      updatedColumns[columnIndex].tasks = updatedTasks;
+      setColumns(updatedColumns);
+      await axios.put(`${import.meta.env.VITE_API_URL}/tasks/reorder`, {
+        tasks: updatedTasks,
+      });
+    } else {
+      // Move task to a different column
+      const activeTask = activeColumn.tasks.find(
+        (task) => task._id === active.id
+      );
+      const updatedTask = { ...activeTask, category: overColumn.id };
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/tasks/${active.id}`,
+        updatedTask
+      );
+      fetchTasks();
+    }
+
+    setActiveTask(null);
+  };
+
+  // Add or edit a task
+  const handleSaveTask = async (task) => {
+    if (editingTask) {
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/tasks/${task._id}`,
+        task
+      );
+    } else {
+      await axios.post(`${import.meta.env.VITE_API_URL}/tasks`, task);
+    }
+    fetchTasks();
+    setShowForm(false);
+    setEditingTask(null);
+  };
+
+  // Delete a task
+  const handleDeleteTask = async (id) => {
+    await axios.delete(`${import.meta.env.VITE_API_URL}/tasks/${id}`);
+    fetchTasks();
+  };
 
   return (
-    <div className="flex h-screen bg-base-100">
-      {" "}
-      {/* Use DaisyUI's bg-base-100 for theme-aware background */}
-      {/* Sidebar */}
-      <aside
-        className={`fixed md:relative z-20 w-64 bg-base-200 shadow-lg transform transition-transform duration-300 ease-in-out ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-        }`}
+    <div className="min-h-screen bg-gray-100 p-6">
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
+        Task Management System
+      </h1>
+
+      {/* Add Task Button */}
+      <button
+        onClick={() => setShowForm(true)}
+        className="bg-blue-600 text-white px-4 py-2 rounded-md mb-6 hover:bg-blue-700 transition duration-300"
       >
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-primary">TaskMaster</h1>{" "}
-          {/* Use DaisyUI's text-primary for theme-aware text */}
-        </div>
-        <nav className="mt-6">
-          <ul>
-            <li className="mb-4">
-              <Link
-                to="/dashboard"
-                className="flex items-center px-6 py-2 text-base-content hover:bg-base-300"
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <FaTasks className="mr-3" />
-                Dashboard
-              </Link>
-            </li>
-            <li className="mb-4">
-              <Link
-                to="/tasks"
-                className="flex items-center px-6 py-2 text-base-content hover:bg-base-300"
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <FaTasks className="mr-3" />
-                Tasks
-              </Link>
-            </li>
-            <li className="mb-4">
-              <Link
-                to="/calendar"
-                className="flex items-center px-6 py-2 text-base-content hover:bg-base-300"
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <FaCalendarAlt className="mr-3" />
-                Calendar
-              </Link>
-            </li>
-            <li className="mb-4">
-              <Link
-                to="/settings"
-                className="flex items-center px-6 py-2 text-base-content hover:bg-base-300"
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <FaCog className="mr-3" />
-                Settings
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-      {/* Overlay for mobile sidebar */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        ></div>
+        <FaPlus className="inline-block mr-2" />
+        Add Task
+      </button>
+
+      {/* Task Form Modal */}
+      {showForm && (
+        <TaskForm
+          onSave={handleSaveTask}
+          onCancel={() => {
+            setShowForm(false);
+            setEditingTask(null);
+          }}
+          task={editingTask}
+        />
       )}
-      {/* Main Content */}
-      <main className="flex-1 p-4 md:p-8 overflow-y-auto">
-        {/* Header */}
-        <header className="flex justify-between items-center mb-8">
-          <div className="flex items-center space-x-4">
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2 text-base-content hover:bg-base-300 rounded-lg"
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            >
-              <FaBars className="text-xl" />
-            </button>
-            <h2 className="text-2xl md:text-3xl font-semibold text-base-content">
-              Dashboard
-            </h2>
-          </div>
-          <div className="flex items-center space-x-4">
-            {/* Theme Toggle Button */}
-            <button
-              className="p-2 text-base-content hover:bg-base-300 rounded-lg"
-              onClick={toggleTheme}
-            >
-              {theme === "light" ? (
-                <FaMoon className="text-xl" />
-              ) : (
-                <FaSun className="text-xl" />
-              )}
-            </button>
-            <button className="btn btn-primary hidden md:flex">
-              <FaPlus className="mr-2" />
-              New Task
-            </button>
-            <div className="avatar">
-              <div className="w-8 md:w-10 rounded-full">
-                <img src="https://via.placeholder.com/150" alt="User" />
-              </div>
-            </div>
-          </div>
-        </header>
 
-        {/* Mobile New Task Button */}
-        <button className="md:hidden btn btn-primary w-full mb-6">
-          <FaPlus className="mr-2" />
-          New Task
-        </button>
+      {/* Task Columns */}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <SortableContext
+            items={columns.map((column) => column.id)}
+            strategy={horizontalListSortingStrategy}
+          >
+            {columns.map((column) => (
+              <TaskColumn
+                key={column.id}
+                column={column}
+                onEdit={setEditingTask}
+                onDelete={handleDeleteTask}
+              />
+            ))}
+          </SortableContext>
+        </div>
 
-        {/* Page Content */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="bg-base-200 p-4 md:p-6 rounded-lg shadow"
-        >
-          <Outlet /> {/* This renders the nested routes */}
-        </motion.div>
-      </main>
+        {/* Drag Overlay */}
+        <DragOverlay>
+          {activeTask && (
+            <TaskItem
+              task={activeTask}
+              onEdit={setEditingTask}
+              onDelete={handleDeleteTask}
+              isDragging
+            />
+          )}
+        </DragOverlay>
+      </DndContext>
     </div>
   );
 };

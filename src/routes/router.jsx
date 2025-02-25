@@ -5,6 +5,9 @@ import Login from "../components/Authentication/Login";
 import Register from "../components/Authentication/Register";
 import AboutUs from "../components/AboutUs";
 import Dashboard from "../pages/Dashboard";
+import TaskBoard from "../components/Tasks/TaskBoard";
+// import ViewTasks from "../components/ViewTasks";
+// import TaskBoard from "../components/Tasks/TaskBoard";
 
 const router = createBrowserRouter([
   {
@@ -32,12 +35,6 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <Dashboard />,
-    children: [
-      {
-        path: "/tasks",
-        element: <ViewTasks />,
-      },
-    ],
   },
 ]);
 
