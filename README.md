@@ -1,6 +1,6 @@
 # [Task Management Application](https://task-management-7695a.web.app)
 
-Welcome to **Task Management Application**. An Online Tutor Booking Platform is a system designed to connect students with qualified tutors for various subjects or skills.
+Welcome to **Task Management Application**. A tool for organizing daily tasks and projects.
 
 ---
 
