@@ -6,7 +6,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 const TaskItem = ({ task, onEdit, onDelete, isDragging }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: task._id });
-
+  // console.log(task._id);
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -31,13 +31,13 @@ const TaskItem = ({ task, onEdit, onDelete, isDragging }) => {
           onClick={() => onEdit(task)}
           className="text-blue-600 hover:text-blue-700"
         >
-          <FaEdit size={16} />
+          <FaEdit size={22} />
         </button>
         <button
           onClick={() => onDelete(task._id)}
           className="text-red-600 hover:text-red-700"
         >
-          <FaTrash size={16} />
+          <FaTrash size={22} />
         </button>
       </div>
     </div>

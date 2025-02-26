@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, Links } from "react-router-dom";
 import { motion } from "framer-motion";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { FaMoon, FaSignInAlt, FaSun } from "react-icons/fa";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logOut } = useContext(AuthContext);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -26,12 +28,24 @@ const Navbar = () => {
       <NavLink to="/about-us">About</NavLink>
       <NavLink to="/#features">Features</NavLink>
       <NavLink to="#contact">Contact</NavLink>
-      <NavLink to="/login">
-        <div className="flex justify-between items-center gap-1">
-          <FaSignInAlt className="mr-2" />
-          Login
-        </div>
-      </NavLink>
+      {user ? (
+        <>
+          <NavLink to="/dashboard">Dashboard</NavLink>
+          <Link
+            className="flex justify-between items-center gap-1 text-lg font-semibold"
+            onClick={logOut}
+          >
+            Logout
+          </Link>
+        </>
+      ) : (
+        <NavLink to="/login">
+          <div className="flex justify-between items-center gap-1">
+            <FaSignInAlt className="mr-2" />
+            Login
+          </div>
+        </NavLink>
+      )}
       <NavLink onClick={toggleTheme}>
         <div className="flex justify-between items-center gap-1">
           {isDarkMode ? (

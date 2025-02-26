@@ -1,11 +1,60 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import { FaGoogle, FaEyeSlash, FaEye } from "react-icons/fa";
-import { Link } from "react-router-dom"; // Assuming you're using React Router
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Assuming you're using React Router
 import { Helmet } from "react-helmet";
+
+import toast from "react-hot-toast";
+import { AuthContext } from "../../providers/AuthProvider";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state || "/";
+
+  const { signIn, signInWithGoogle } = useContext(AuthContext);
+
+  // Email Password Signin
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const pass = form.password.value;
+
+    try {
+      //User Login
+      await signIn(email, pass);
+      toast.success("Signin Successful");
+      navigate(from, { replace: true });
+    } catch (err) {
+      if (err.code === "Unauthorized") {
+        toast.error("Invalid Email or Password");
+      } else if (
+        err.code === "PERMISSION_DENIED" ||
+        err.code === " permission denied"
+      ) {
+        toast.error("Permission Denied");
+      } else if (err.code === "auth/invalid-credential") {
+        toast.error("Invalid User!");
+        navigate("/registration");
+      } else {
+        toast.error(err?.message);
+      }
+    }
+  };
+
+  // Google Signin
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+
+      toast.success("Signin Successful");
+      navigate(from, { replace: true });
+    } catch (err) {
+      toast.error(err?.message);
+    }
+  };
   return (
     <>
       <Helmet>
@@ -24,13 +73,14 @@ const Login = () => {
           </h1>
 
           {/* Login Form */}
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSignIn}>
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Email
               </label>
               <input
                 type="email"
+                name="email"
                 placeholder="Enter your email"
                 className="mt-1 block w-full px-4 py-2 border dark:bg-white border-gray-300 rounded-md shadow-sm focus:ring-blue-500  focus:border-blue-600 focus:outline-0"
               />
@@ -42,6 +92,7 @@ const Login = () => {
               </label>
               <input
                 type={showPassword ? "text" : "password"}
+                name="password"
                 placeholder="Enter your password"
                 className="mt-1 block w-full px-4 py-2 border dark:bg-white border-gray-300 rounded-md shadow-sm focus:ring-blue-500  focus:border-blue-600 focus:outline-0"
               />
@@ -66,7 +117,10 @@ const Login = () => {
           <div className="mt-6">
             <p className="text-center text-gray-600">Or login with</p>
             <div className="flex justify-center space-x-4 mt-4">
-              <button className="p-2 rounded-full bg-red-600 text-white hover:bg-red-700 transition duration-300">
+              <button
+                onClick={handleGoogleSignIn}
+                className="p-2 rounded-full bg-red-600 text-white hover:bg-red-700 transition duration-300"
+              >
                 <FaGoogle size={20} />
               </button>
             </div>
