@@ -7,6 +7,7 @@ import AboutUs from "../components/AboutUs";
 import Dashboard from "../pages/Dashboard";
 import TaskBoard from "../components/Tasks/TaskBoard";
 import PrivateRoute from "./PrivateRoute";
+import ContactUs from "../components/ContactUs";
 // import ViewTasks from "../components/ViewTasks";
 // import TaskBoard from "../components/Tasks/TaskBoard";
 
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/about-us",
         element: <AboutUs />,
+      },
+      {
+        path: "/contact",
+        element: <ContactUs />,
       },
     ],
   },
